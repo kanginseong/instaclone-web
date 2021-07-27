@@ -5,7 +5,7 @@ import { darkModeVar, isLoggedInVar } from "./apollo";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
-import { drakTheme, GlobalStyles, lightTheme } from "./styles";
+import { darkTheme, GlobalStyles, lightTheme } from "./styles";
 
 function App() {
   // You can change isLoggedInVar anywhere, and that will be the starting point for re-renders.
@@ -13,7 +13,7 @@ function App() {
   const darkMode = useReactiveVar(darkModeVar);
   return (
     <div>
-      <ThemeProvider theme={darkMode ? drakTheme : lightTheme}>
+      <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
         <Router>
           <Switch>
