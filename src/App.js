@@ -5,16 +5,17 @@ import { darkModeVar, isLoggedInVar } from "./apollo";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import NotFound from "./screens/NotFound";
-import routes from "./screens/routes";
+import routes from "./routes";
 import SignUp from "./screens/SignUp";
 import { darkTheme, GlobalStyles, lightTheme } from "./styles";
+import { HelmetProvider } from "react-helmet-async";
 
 function App() {
   // You can change isLoggedInVar anywhere, and that will be the starting point for re-renders.
   const isLoggedIn = useReactiveVar(isLoggedInVar);
   const darkMode = useReactiveVar(darkModeVar);
   return (
-    <div>
+    <HelmetProvider>
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <GlobalStyles />
         <Router>
@@ -34,7 +35,7 @@ function App() {
           </Switch>
         </Router>
       </ThemeProvider>
-    </div>
+    </HelmetProvider>
   );
 }
 

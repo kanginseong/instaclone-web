@@ -12,7 +12,8 @@ import Button from "../components/auth/Button";
 import Seperator from "../components/auth/Seperator";
 
 import BottomBox from "../components/auth/BottomBox";
-import routes from "./routes";
+import routes from "../routes";
+import PageTitle from "../components/PageTitle";
 
 // Facebook Log In
 const FaceBookLogin = styled.div`
@@ -26,6 +27,7 @@ const FaceBookLogin = styled.div`
 function Login() {
   return (
     <AuthLayout>
+      <PageTitle title="LogIn" />
       <FormBox>
         <div>
           <FontAwesomeIcon icon={faInstagram} size="3x" />
