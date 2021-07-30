@@ -117,6 +117,7 @@ function SignUp() {
             ref={register({
               required: "First Name is required",
             })}
+            onChange={clearSignUpError}
             name="firstName"
             type="text"
             placeholder="First Name"
@@ -133,6 +134,7 @@ function SignUp() {
             ref={register({
               required: "Email is required",
             })}
+            onChange={clearSignUpError}
             name="email"
             type="text"
             placeholder="Email"
@@ -143,6 +145,7 @@ function SignUp() {
             ref={register({
               required: "Username is required",
             })}
+            onChange={clearSignUpError}
             name="username"
             type="text"
             placeholder="Username"
@@ -153,6 +156,7 @@ function SignUp() {
             ref={register({
               required: "Password is required",
             })}
+            onChange={clearSignUpError}
             name="password"
             type="password"
             placeholder="Password"

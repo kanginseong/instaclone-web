@@ -9,6 +9,7 @@ import routes from "./routes";
 import SignUp from "./screens/SignUp";
 import { darkTheme, GlobalStyles, lightTheme } from "./styles";
 import { HelmetProvider } from "react-helmet-async";
+import Layout from "./components/Layout";
 
 function App() {
   // You can change isLoggedInVar anywhere, and that will be the starting point for re-renders.
@@ -22,7 +23,13 @@ function App() {
           <Router>
             <Switch>
               <Route path={routes.home} exact>
-                {isLoggedIn ? <Home /> : <Login />}
+                {isLoggedIn ? (
+                  <Layout>
+                    <Home />
+                  </Layout>
+                ) : (
+                  <Login />
+                )}
               </Route>
               {!isLoggedIn ? (
                 <Route path={routes.signUp}>
