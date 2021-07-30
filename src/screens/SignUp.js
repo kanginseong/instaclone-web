@@ -14,6 +14,7 @@ import PageTitle from "../components/PageTitle";
 import { gql, useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
+import FormError from "../components/auth/FormError";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -49,7 +50,15 @@ const CREATE_ACCOUNT_MUTATION = gql`
 `;
 
 function SignUp() {
-  const { register, handleSubmit, errors, formState, getValues } = useForm({
+  const {
+    register,
+    handleSubmit,
+    errors,
+    formState,
+    getValues,
+    setError,
+    clearErrors,
+  } = useForm({
     mode: "onChange",
   });
 
@@ -62,7 +71,9 @@ function SignUp() {
       createAccount: { ok, error },
     } = data;
     if (!ok) {
-      return;
+      return setError("result", {
+        message: error,
+      });
     }
     history.push(routes.home, {
       message: "Account created. Please log in.",
@@ -71,6 +82,7 @@ function SignUp() {
     });
   };
 
+  // mutation loading
   const [createAccount, { loading }] = useMutation(CREATE_ACCOUNT_MUTATION, {
     onCompleted,
   });
@@ -84,6 +96,10 @@ function SignUp() {
         ...data,
       },
     });
+  };
+
+  const clearSignUpError = () => {
+    clearErrors("result");
   };
 
   return (
@@ -104,7 +120,9 @@ function SignUp() {
             name="firstName"
             type="text"
             placeholder="First Name"
+            hasError={Boolean(errors?.firstName?.message)}
           />
+          <FormError message={errors?.firstName?.message} />
           <Input
             ref={register}
             name="lastName"
@@ -118,7 +136,9 @@ function SignUp() {
             name="email"
             type="text"
             placeholder="Email"
+            hasError={Boolean(errors?.email?.message)}
           />
+          <FormError message={errors?.email?.message} />
           <Input
             ref={register({
               required: "Username is required",
@@ -126,7 +146,9 @@ function SignUp() {
             name="username"
             type="text"
             placeholder="Username"
+            hasError={Boolean(errors?.username?.message)}
           />
+          <FormError message={errors?.username?.message} />
           <Input
             ref={register({
               required: "Password is required",
@@ -134,12 +156,15 @@ function SignUp() {
             name="password"
             type="password"
             placeholder="Password"
+            hasError={Boolean(errors?.password?.message)}
           />
+          <FormError message={errors?.password?.message} />
           <Button
             type="submit"
             value={loading ? "Loading..." : "Sign up"}
             disabled={!formState.isValid || loading}
           />
+          <FormError message={errors?.result?.message} />
         </form>
       </FormBox>
       <BottomBox cta="Have an account?" link={routes.home} linkText="Log In" />
