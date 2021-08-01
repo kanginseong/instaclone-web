@@ -17,14 +17,16 @@ function useUser() {
   const { data } = useQuery(ME_QUERY, {
     skip: !hasToken,
   });
-  console.log(data);
+
   // 'useEffect' runs once a hook is mounted, every time the data changes.
   useEffect(() => {
     if (data?.me === null) {
       // there is a token on LocalStorge but the token did not work on the backend.
-      logUserOut();
+      // logUserOut();
+      console.log(data);
     }
   }, [data]);
+
   return { data };
 }
 

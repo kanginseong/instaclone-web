@@ -66,7 +66,9 @@ function Header() {
                 <Icon>
                   <FontAwesomeIcon icon={faCompass} size="lg" />
                 </Icon>
-                {/* <Avatar url={data?.me?.avatar} /> */}
+                <Icon>
+                  <Avatar url={data?.me?.avatar} />
+                </Icon>
               </IconsContainer>
             </>
           ) : (

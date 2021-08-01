@@ -6,7 +6,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 
-const TOKEN = "TOKEN";
+const TOKEN = "token";
 const DARK_MODE = "DARK_MODE";
 
 export const isLoggedInVar = makeVar(Boolean(localStorage.getItem(TOKEN)));
@@ -51,6 +51,6 @@ const authLink = setContext((_, { headers }) => {
 
 // Link is how Apollo clients communicate with data sources.
 export const client = new ApolloClient({
-  Link: authLink.concat(httpLink),
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
