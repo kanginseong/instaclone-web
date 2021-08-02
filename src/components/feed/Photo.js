@@ -97,47 +97,64 @@ function Photo({
       },
     } = result;
     if (ok) {
-      cache.writeFragment({
-        id: `Photo:${id}`,
-        fragment: gql`
-          fragment BSName on Photo {
-            isLiked
-            likes
-          }
-        `,
-        data: {
-          isLiked: !isLiked,
-          likes: isLiked ? likes - 1 : likes + 1,
+      // 1. Modify
+      const photoId = `Photo:${id}`;
+      cache.modify({
+        id: photoId,
+        fields: {
+          isLiked(prev) {
+            return !prev;
+          },
+          likes(prev) {
+            if (isLiked) {
+              return prev - 1;
+            }
+            return prev + 1;
+          },
         },
       });
+      // 2. writeFragment
+      // cache.writeFragment({
+      //   id: `Photo:${id}`,
+      //   fragment: gql`
+      //     fragment BSName on Photo {
+      //       isLiked
+      //       likes
+      //     }
+      //   `,
+      //   data: {
+      //     isLiked: !isLiked,
+      //     likes: isLiked ? likes - 1 : likes + 1,
+      //   },
+      // });
     }
-    /* don't have props
-      cache.readFragment({
-        id: `Photo:${id}`,
-        fragment: : gql`
-          fragment BSName on Photo {
-            isLiked
-            likes
-          }
-        `
-      })
-      if("isLiked" in result && "likes" in result) {
-        const {isLiked, likes} = result;
-        cache.writeFragment({
-        id: `Photo:${id}`,
-        fragment: gql`
-          fragment BSName on Photo {
-            isLiked
-            likes
-          }
-        `,
-        data: {
-          isLiked: !isLiked,
-          likes: isLiked ? likes - 1 : likes + 1,
-        },
-      });
-      }
-      */
+
+    // 3. don't have props
+    // cache.readFragment({
+    //   id: `Photo:${id}`,
+    //   fragment: : gql`
+    //     fragment BSName on Photo {
+    //       isLiked
+    //       likes
+    //     }
+    //   `
+    // })
+    // if("isLiked" in result && "likes" in result) {
+    //   const {isLiked, likes} = result;
+    //   cache.writeFragment({
+    //   id: `Photo:${id}`,
+    //   fragment: gql`
+    //     fragment BSName on Photo {
+    //       isLiked
+    //       likes
+    //     }
+    //   `,
+    //   data: {
+    //     isLiked: !isLiked,
+    //     likes: isLiked ? likes - 1 : likes + 1,
+    //   },
+    // });
+    // }
   };
   const [toggleLikeMutation] = useMutation(TOGGLE_LIKE_MUTATION, {
     variables: {
