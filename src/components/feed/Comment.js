@@ -3,8 +3,11 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FatText } from "../shared";
 import { Link } from "react-router-dom";
+import { gql, useMutation } from "@apollo/client";
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+  margin-bottom: 7px;
+`;
 
 const CommentCaption = styled.span`
   margin-left: 10px;
@@ -18,33 +21,72 @@ const CommentCaption = styled.span`
   }
 `;
 
+const DELETE_COMMENT_MUTATION = gql`
+  mutation deleteComment($id: Int!) {
+    deleteComment(id: $id) {
+      ok
+    }
+  }
+`;
+
 // dangerouslySetInnerHTML -> Make it interpreted as html, not text.
-function Comment({ author, payload }) {
+function Comment({ id, photoId, isMine, author, payload }) {
   // const cleanedPayload = sanitizeHtml(
   //   payload.replace(/#[\w]+/g, "<mark>$&</mark>"),
   //   {
   //     allowedTags: ["mark"],
   //   }
   // );
+  const updateDeleteComment = (cache, result) => {
+    const {
+      data: {
+        deleteComment: { ok },
+      },
+    } = result;
+    if (ok) {
+      cache.evict({ id: `Comment:${id}` });
+      cache.modify({
+        id: `Photo:${photoId}`,
+        fields: {
+          commentNumber(prev) {
+            return prev - 1;
+          },
+        },
+      });
+    }
+  };
+  const [deleteCommentMutation] = useMutation(DELETE_COMMENT_MUTATION, {
+    variables: {
+      id,
+    },
+    update: updateDeleteComment,
+  });
+  const onDeleteClick = () => {
+    deleteCommentMutation();
+  };
   return (
     <CommentContainer>
       <FatText>{author}</FatText>
       <CommentCaption>
         {payload.split(" ").map((word, index) =>
           /#[\w]+/.test(word) ? (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <Link to={`/hashtags/${word}`}>{word}</Link>{" "}
             </React.Fragment>
           ) : (
-            <React.Fragment>{word} </React.Fragment>
+            <React.Fragment key={index}>{word} </React.Fragment>
           )
         )}
       </CommentCaption>
+      {isMine ? <button onClick={onDeleteClick}>x</button> : null}
     </CommentContainer>
   );
 }
 
 Comment.propTypes = {
+  isMine: PropTypes.bool,
+  id: PropTypes.number,
+  photoId: PropTypes.number,
   author: PropTypes.string.isRequired,
   payload: PropTypes.string.isRequired,
 };

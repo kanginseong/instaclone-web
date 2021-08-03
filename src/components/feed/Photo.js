@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import Avatar from "../Avatar";
 import { FatText } from "../shared";
-import Comments from "./PhotoComments";
+import Comments from "./Comments";
 
 const TOGGLE_LIKE_MUTATION = gql`
   mutation toggleLike($id: Int!) {
@@ -196,6 +196,7 @@ function Photo({
         </PhotoActions>
         <Likes>{likes === 1 ? "1 like" : `${likes} likes`}</Likes>
         <Comments
+          photoId={id}
           author={user.username}
           caption={caption}
           commentNumber={commentNumber}
