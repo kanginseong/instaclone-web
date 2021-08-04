@@ -10,6 +10,7 @@ import SignUp from "./screens/SignUp";
 import { darkTheme, GlobalStyles, lightTheme } from "./styles";
 import { HelmetProvider } from "react-helmet-async";
 import Layout from "./components/Layout";
+import Profile from "./screens/Profile";
 
 function App() {
   // You can change isLoggedInVar anywhere, and that will be the starting point for re-renders.
@@ -36,6 +37,12 @@ function App() {
                   <SignUp />
                 </Route>
               ) : null}
+              {/* Let me know if you add :, it's a variable. */}
+              <Route path={`/users/:username`}>
+                <Layout>
+                  <Profile />
+                </Layout>
+              </Route>
               <Route>
                 {/* <Redirect to="/" /> */}
                 <NotFound />

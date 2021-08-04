@@ -60,14 +60,16 @@ function Header() {
           {isLoggedIn ? (
             <>
               <IconsContainer>
-                <Icon>
+                <Link to={routes.home}>
                   <FontAwesomeIcon icon={faHome} size="lg" />
-                </Icon>
+                </Link>
                 <Icon>
                   <FontAwesomeIcon icon={faCompass} size="lg" />
                 </Icon>
                 <Icon>
-                  <Avatar url={data?.me?.avatar} />
+                  <Link to={`/users/${data?.me?.username}`}>
+                    <Avatar url={data?.me?.avatar} />
+                  </Link>
                 </Icon>
               </IconsContainer>
             </>

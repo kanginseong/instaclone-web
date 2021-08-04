@@ -52,5 +52,11 @@ const authLink = setContext((_, { headers }) => {
 // Link is how Apollo clients communicate with data sources.
 export const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      User: {
+        keyFields: (obj) => `User:${obj.username}`,
+      },
+    },
+  }),
 });
